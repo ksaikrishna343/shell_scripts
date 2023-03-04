@@ -1,0 +1,59 @@
+---
+- name:  Linux Memory Usage Monitoring
+  hosts: all
+
+  tasks:
+
+    - name: 'copy Get-Memory-Utilization.sh script to {{ inventory_hostname }}'
+      copy:
+        src:  Get-Memory-Utilization.sh
+        dest: /tmp
+        mode: '0775'
+
+    - name: 'Preparing Memory utilization using script results'
+      shell: |
+        sh /tmp/Get-Memory-Utilization.sh
+      register: memsec
+
+
+    - name: 'Preparing Memory utilization for 1st sec'
+      shell: |
+        sh /tmp/Get-Memory-Utilization.sh
+      register: mem1sec
+
+
+    - name: 'Preparing Memory utilization for 2nd sec'
+      shell: |
+        sh /tmp/Get-Memory-Utilization.sh
+      register: mem2sec
+
+
+    - name: 'Preparing Memory utilization for 3rd sec'
+      shell: |
+        sh /tmp/Get-Memory-Utilization.sh
+      register: mem3sec
+
+
+    - name: 'Prepare Memory Used percentage if its abnormal'
+      shell: |
+        sh /tmp/Get-Memory-Utilization.sh
+      register: memhigusage
+      when: memsec.stdout|int >= 90 or mem1sec.stdout|int >= 90 or mem2sec.stdout|int >= 90 or mem3sec.stdout|int >= 90
+
+    - name: 'Print message if MEMORY utilization become normal'
+      debug:
+        msg:
+          - -------------------------------------------------------
+          -  Memory Utilization = ( ( Total - Free ) / Total * 100 ) = {{ memsec.stdout }}%
+          - -------------------------------------------------------
+      when: memsec.stdout|int < 90 and mem1sec.stdout|int < 90 and mem2sec.stdout|int < 90 and mem3sec.stdout|int < 90
+
+    - name: 'Print message if MEMORY utilization become abnormal'
+      debug:
+        msg:
+           - -------------------------------------------------------
+           - Memory Utilization = ( ( Total - Free ) / Total * 100 ) = {{ memhigusage.stdout }}%
+           - -------------------------------------------------------
+      when: memsec.stdout|int >= 90 or mem1sec.stdout|int >= 90 or mem2sec.stdout|int >= 90 or mem3sec.stdout|int >= 90
+
+
