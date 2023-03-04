@@ -26,5 +26,5 @@ iface $slave inet manual
 EOL"
 done
 
-# Restart the network service
+## Restart the network service
 sudo systemctl restart networking
