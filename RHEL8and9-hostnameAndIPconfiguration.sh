@@ -1,6 +1,6 @@
 #!/bin/bash
 #script to configure the network settings on this server
-echo "CAUTION..! Make sure you are selected correct VLAN in network settings for VM."
+echo "CAUTION..! Before proceeding please make sure you have selected correct VLAN in network settings for VM."
 read -p "Do you want to proceed? (yes/no) " yn
 
 case $yn in
@@ -45,6 +45,6 @@ sleep 5
 echo " "
 cp /etc/motd.orig /etc/motd
 cp /etc/profile.d/login-info.sh.orig /etc/profile.d/login-info.sh
-echo "rebooting the server in 10 seconds..."
+echo "rebooting the server in 10 seconds...If you do not want to restart the server press Ctrl+C..."
 sleep 10
 init 6
