@@ -1,0 +1,45 @@
+[root@rhel9-template ~]# cat /etc/motd
+ ###############################################################################################
+ # This is a newly deployed server. Please run below script to set the hostname and IP address #
+ # sh /root/network-settings.sh                                                                #
+ ###############################################################################################
+[root@rhel9-template ~]# cat /etc/motd.bkp
+ ###############################################################################################
+ # This is a newly deployed server. Please run below script to set the hostname and IP address #
+ # sh /root/network-settings.sh                                                                #
+ ###############################################################################################
+[root@rhel9-template ~]# cat /etc/motd.orig
+Authorized uses only. All activity may be monitored and reported.
+           ############################################
+           # Hello! Maybe you shouldn't be here.      #
+           # In any case all your activity is logged. #
+           ############################################
+[root@rhel9-template ~]#
+[root@rhel9-template ~]# cat /etc/profile.d/login-info.sh.orig
+HOSTNAME=$(uname -n)
+KERNEL=$(uname -r)
+CPU=$(lscpu | grep CPU\(s\): | grep -v NUMA | awk '{print$2}' FS=' ')
+MEMORY=$(lsmem -a|grep "Total online memory"|awk '{print $4}')
+IPADDRESS=$(hostname -i)
+WHOAMI=$(whoami)
+
+echo ""
+echo -e "                        Managed by Ansible"
+
+echo -e "       _______   __       __    __ ___   ___ _______  _______ "
+echo -e "      |   __  \ |  |     |  |  |  |\  \ /  /|   ____||   ____|"
+echo -e "      |  |__)  ||  |     |  |  |  | \  V  / |  |__   |  |__   "
+echo -e "      |   ____/ |  |     |  |  |  |  >   <  |   __|  |   __|  "
+echo -e "      |  |      |  |____ |   --   | /  .  \ |  |____ |  |____ "
+echo -e "      |__|      |_______| \______/ /__/ \__\|_______||_______|"
+
+echo ""
+echo -e "       Hostname:           \033[01;32m $HOSTNAME  \033[0m"
+echo -e "       User:               \033[01;32m $WHOAMI  \033[0m"
+echo -e "       CPU:                \033[01;32m $CPU  \033[0m"
+echo -e "       Memory:             \033[01;32m $MEMORY  \033[0m"
+echo -e "       Kernel:             \033[01;32m $KERNEL  \033[0m"
+echo -e "       Main IP address:    \033[01;32m $IPADDRESS  \033[0m"
+
+echo ""
+[root@rhel9-template ~]#
